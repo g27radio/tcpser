@@ -11,6 +11,7 @@
 
 void dce_init_config(dce_config *cfg) {
   cfg->parity = -1;  // parity not yet checked.
+  cfg->write_delay = 0;
 }
 
 int detect_parity (int charA, int charT) {
@@ -153,7 +154,7 @@ int dce_write(dce_config *cfg, unsigned char data[], int len) {
   } else {
     buf = data;
   }
-  rc = ser_write(cfg->ofd, buf, len);
+  rc = ser_write(cfg->ofd, buf, len, cfg->write_delay);
   if(cfg->parity)
     free(buf);
   return rc;
@@ -166,7 +167,7 @@ int dce_write_char_raw(dce_config *cfg, unsigned char data) {
   if (cfg->is_ip232) {
     rc = ip232_write(cfg, &data, 1);
   } else {
-    rc = ser_write(cfg->ofd, &data, 1);
+    rc = ser_write(cfg->ofd, &data, 1, cfg->write_delay);
   }
   return rc;
 }

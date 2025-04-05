@@ -38,6 +38,7 @@ void print_help(char* name) {
   fprintf(stderr, "  -B   filename to send when modem(s) busy\n");
   fprintf(stderr, "  -T   filename to send upon inactivity timeout\n");
   fprintf(stderr, "  -i   modem init string (defaults to '', leave off 'at' prefix when specifying)\n");
+  fprintf(stderr, "  -w   write delay in microseconds between bytes sent to the serial port (defaults to 0)\n");
   fprintf(stderr, "  -D   direct connection (follow with hostname:port for caller, : for receiver)\n");
   exit(0);
 }
@@ -182,6 +183,10 @@ int init(int argc,
         printf("%s (TCPSER) %s\n", argv[0], VERSION);
         printf("Copyright (C) 2004-%s Jim Brain (tcpser@jbrain.com)\n", __DATE__ + 7);
         exit(0);
+        break;
+      case 'w':
+        LOG(LOG_ALL, "Setting modem response delay to %s microseconds", optarg);
+        cfg[i].dce_data.write_delay = atoi(optarg);
         break;
     }
   }

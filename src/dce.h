@@ -33,6 +33,7 @@ enum {
 
 typedef struct dce_config {
   int port_speed;
+  int write_delay;
   int parity;
   int is_ip232;
   char tty[256];

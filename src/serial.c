@@ -224,9 +224,18 @@ int ser_set_control_lines(int fd, int state) {
   return 0;
 }
 
-int ser_write(int fd, unsigned char* data, int len) {
+int ser_write(int fd, unsigned char* data, int len, int delay) {
   log_trace(TRACE_MODEM_OUT, data, len);
-  return write(fd, data, len);
+  if (delay > 0) {
+    for (int i=0;i<len;i++) {
+      write(fd, data + i, 1);
+      usleep(delay);
+    }
+    return len;
+  }
+  else {
+    return write(fd, data, len);
+  }
 }
 
 int ser_read(int fd, unsigned char* data, int len) {

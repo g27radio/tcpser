@@ -41,8 +41,8 @@ int main(int argc, char* argv[]) {
 
   // send init string
   if(strlen(init) > 0) {
-    ser_write(sfd,init,strlen(init));
-    ser_write(sfd,cr,1);
+    ser_write(sfd,init,strlen(init),sfd->write_delay);
+    ser_write(sfd,cr,1,sfd->write_delay);
   }
 
   // if configured, listen on ip address
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
           csd=-1;
         }
         if(res > 0 && csd > -1) {
-          ser_write(csd,buf,res);
+          ser_write(csd,buf,res,csd->serial_write_delay);
         }
       }
 
